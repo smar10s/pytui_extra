@@ -1,0 +1,10 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pytui_extra"
+version = "0.1"
+dependencies = [
+    "pytui>=1.0",
+]
