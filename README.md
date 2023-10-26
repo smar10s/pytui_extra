@@ -35,15 +35,29 @@ Rows can be styled individually using `style_row`. This accepts a list of string
 
 Example:
 
+Create a table in a 40x10 window with three columns, a header and non-default row styles.
+
 ```
 from pytui import Window, Text
 from pytui_extra import Table
 
-# create 80x40 window at 0,0
-window = Window(0, 0, 80, 40)
 
-# create table with 3 columns: 2x 4 char wide on the right, with the remainder on the left
-table = Table(window, [None, 4, 4])
+# create 40x10 window at top left
+window = Window(0, 0, 40, 10)
+
+# create a table with three columns: two 6 char wide on the right, with the remainder on the left
+table = Table(
+    window,
+    [None, 6, 6],
+    # include optional header and set style
+    ['Items', 'Price', 'Count'],
+    header_style={'bg': 0x232D51, 'fg': 0xA2AADD, 'bold': True}
+)
+
+# change default row and highlight styles
+table.row_style = {'bg': 0x1B1E2D, 'fg': 0xA2AADD}
+table.alt_row_style = {'bg': 0x181A28, 'fg': 0xA2AADD}
+table.highlight_style = {'bg': 0x232D51, 'fg': 0xA2AADD}
 
 # right-justify the right columns
 table.set_column_format(1, {'justify': 'right'})
@@ -51,15 +65,15 @@ table.set_column_format(2, {'justify': 'right'})
 
 # update table with data - slice operators are useful for 'paging'
 table.update([
-    ['Food', Text('2.4').style({'bg': 0xff0000}), 10],  # apply style to individual cell
+    ['Food', Text('2.4').style({'fg': 0xff0000}), 10],  # apply style to individual cell
     ['Textiles', 5.8, 18],
     ['Radioactives', 17.9, 25],
-    table.highlight_row(['Luxuries', 98.1, 2]),         # highlight row
+    table.highlight_row(['Luxuries', '98.1', '2']),         # highlight row
     ['Computers', 67.2, 7],
     ['Machinery', 45.8, 8],
 ])
 
-# draw table window
+# draw table
 table.draw()
 ```
 ![table](docs/images/table.png)

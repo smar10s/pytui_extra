@@ -5,8 +5,19 @@ from pytui_extra import Table
 # create 40x10 window at top left
 window = Window(0, 0, 40, 10)
 
-# create table with 3 columns: 2x 4 char wide on the right, with the remainder on the left
-table = Table(window, [None, 6, 6], ['Items', 'Price', 'Count'])
+# create a table with three columns: two 6 char wide on the right, with the remainder on the left
+table = Table(
+    window,
+    [None, 6, 6],
+    # include optional header and set style
+    ['Items', 'Price', 'Count'],
+    header_style={'bg': 0x232D51, 'fg': 0xA2AADD, 'bold': True}
+)
+
+# change default row and highlight styles
+table.row_style = {'bg': 0x1B1E2D, 'fg': 0xA2AADD}
+table.alt_row_style = {'bg': 0x181A28, 'fg': 0xA2AADD}
+table.highlight_style = {'bg': 0x232D51, 'fg': 0xA2AADD}
 
 # right-justify the right columns
 table.set_column_format(1, {'justify': 'right'})
@@ -14,7 +25,7 @@ table.set_column_format(2, {'justify': 'right'})
 
 # update table with data - slice operators are useful for 'paging'
 table.update([
-    ['Food', Text('2.4').style({'bg': 0xff0000}), 10],  # apply style to individual cell
+    ['Food', Text('2.4').style({'fg': 0xff0000}), 10],  # apply style to individual cell
     ['Textiles', 5.8, 18],
     ['Radioactives', 17.9, 25],
     table.highlight_row(['Luxuries', '98.1', '2']),         # highlight row
@@ -22,5 +33,5 @@ table.update([
     ['Machinery', 45.8, 8],
 ])
 
-# draw table window
+# draw table
 table.draw()
