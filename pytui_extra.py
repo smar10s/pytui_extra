@@ -17,9 +17,9 @@ class Table:
         header_format={'justify': 'center'},
     ) -> None:
         self.striped = True
-        self.row_color = 0x000000
-        self.alt_row_color = 0x2c2c2c
-        self.highlight_color = 0x808080
+        self.row_style = {'bg': 0x000000}
+        self.alt_row_style = {'bg': 0x2c2c2c}
+        self.highlight_style = {'bg': 0x808080}
         self.draw_header = False
 
         if header:
@@ -52,13 +52,13 @@ class Table:
         return styled
 
     def highlight_row(self, row: list[str]) -> list[str]:
-        return self.style_row(row, {'bg': self.highlight_color})
+        return self.style_row(row, self.highlight_style)
 
     def update(self, rows: list) -> None:
         self.clear()
         for i, row in enumerate(rows):
             if self.striped:
-                row = self.style_row(row, {'bg': self.alt_row_color if i % 2 else self.row_color})
+                row = self.style_row(row, self.alt_row_style if i % 2 else self.row_style)
             for column, format, value in zip(self.columns, self.column_formats, row):
                 column.append_line(self.format_cell(str(value), format, column))
 

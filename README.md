@@ -25,13 +25,13 @@ For example, given a window 10 characters wide:
 - `[4, 4]` will create 2 columns sized 4, 4 and ignore the remainder
 - `[0.2, None, 1]` will create 3 columns sized 2, 7, 1
 
-Columns are striped by default. Set `striped = False` to disable. Set `row_color` and `alt_row_color` to change column background colors.
+Data in columns is left justified using space as the padding character. This can be changed on a per-column level using `set_column_format`.
 
-Data in columns is left justified using `.` as the padding character. This can be changed on a per-column level using `set_column_format`.
+Rows are striped by default. Set `striped = False` to disable. To change colours and other style options, set `row_style` and `alt_row_style` to a `Text.style` dictionary.
 
-Rows can be styled individually using `style_row`. This accepts a list of strings and a `Text.style` compatible dictionary to apply. Values are also justified with the same style applied to the justify character.
+Rows can be styled individually using `style_row`. This accepts a list of strings and a `Text.style` dictionary to apply. Values are also justified with the same style applied to the justify character.
 
-`highlight_row` is a convenience method that uses `style_row` to apply a `highlight_color` background. This color can be changed.
+`highlight_row` is a convenience method that uses `style_row` to apply a `highlight_style` background. This can be changed as above.
 
 Example:
 
