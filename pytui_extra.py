@@ -1,27 +1,42 @@
-from typing import Callable
+from typing import Callable, Optional
 from pytui import Window, Text, Terminal, Keyboard
 
 
 class Table:
     DEFAULT_FORMAT = {
         'justify': 'left',
-        'justify_character': '.'
+        'justify_character': ' '
     }
 
-    striped = True
-    row_color = 0x000000
-    alt_row_color = 0x2c2c2c
-    highlight_color = 0x808080
+    def __init__(
+        self,
+        container: Window,
+        widths,
+        header: Optional[list[str]] = None,
+        header_style={'bold': True},
+        header_format={'justify': 'center'},
+    ) -> None:
+        self.striped = True
+        self.row_color = 0x000000
+        self.alt_row_color = 0x2c2c2c
+        self.highlight_color = 0x808080
+        self.draw_header = False
 
-    def __init__(self, container: Window, widths) -> None:
-        self.column_formats = [self.DEFAULT_FORMAT.copy() for x in widths]
+        if header:
+            row, container = container.hsplit(1)
+            self.draw_header = True
+            self.header_columns = row.vsplit(*widths)[:len(widths)]  # ignore any left over
+            for value, column in zip(header, self.header_columns):
+                column.append_line(Text(self.format_cell(value, header_format, column)).style(header_style))
+
         self.columns = container.vsplit(*widths)[:len(widths)]  # ignore any left over
+        self.column_formats = [self.DEFAULT_FORMAT.copy() for x in widths]
 
     def set_column_format(self, column: int, format: dict) -> None:
         self.column_formats[column].update(format)
 
     def format_cell(self, value: str, format: dict, column: Window) -> str:
-        char = format['justify_character']
+        char = format['justify_character'] if 'justify_character' in format else ' '
         pad = (column.width - len(Text(value).strip_ansi())) * char
         if 'left' == format['justify']:
             return value + pad
@@ -30,10 +45,10 @@ class Table:
         else:
             return pad[:len(pad)//2] + value + pad[len(pad)//2:]
 
-    def style_row(self, row: list[str], text_style: dict = {}) -> list[str]:
+    def style_row(self, row: list[str], style: dict = {}) -> list[str]:
         styled = []
-        for column, style, value in zip(self.columns, self.column_formats, row):
-            styled.append(Text(self.format_cell(str(value), style, column)).style(text_style))
+        for column, format, value in zip(self.columns, self.column_formats, row):
+            styled.append(Text(self.format_cell(str(value), format, column)).style(style))
         return styled
 
     def highlight_row(self, row: list[str]) -> list[str]:
@@ -52,6 +67,10 @@ class Table:
             column.clear()
 
     def draw(self) -> None:
+        if self.draw_header:
+            for column in self.header_columns:
+                column.draw()
+            self.draw_header = False    # draw header once only since it does not change
         for column in self.columns:
             column.draw()
 
