@@ -15,11 +15,14 @@ class Table:
         header: Optional[list[str]] = None,
         header_style={'bold': True},
         header_format={'justify': 'center'},
+        row_style={'bg': 0x000000},
+        alt_row_style={'bg': 0x2c2c2c},
+        highlight_style={'bg': 0x808080},
     ) -> None:
         self.striped = True
-        self.row_style = {'bg': 0x000000}
-        self.alt_row_style = {'bg': 0x2c2c2c}
-        self.highlight_style = {'bg': 0x808080}
+        self.row_style = row_style
+        self.alt_row_style = alt_row_style
+        self.highlight_style = highlight_style
         self.draw_header = False
 
         if header:

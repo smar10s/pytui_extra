@@ -9,15 +9,16 @@ window = Window(0, 0, 40, 10)
 table = Table(
     window,
     [None, 6, 6],
-    # include optional header and set style
-    ['Items', 'Price', 'Count'],
-    header_style={'bg': 0x232D51, 'fg': 0xA2AADD, 'bold': True}
-)
 
-# change default row and highlight styles
-table.row_style = {'bg': 0x1B1E2D, 'fg': 0xA2AADD}
-table.alt_row_style = {'bg': 0x181A28, 'fg': 0xA2AADD}
-table.highlight_style = {'bg': 0x232D51, 'fg': 0xA2AADD}
+    # include optional header
+    header=['Items', 'Price', 'Count'],
+    header_style={'bg': 0x232D51, 'fg': 0xA2AADD, 'bold': True},
+
+    # change default styles
+    row_style={'bg': 0x1B1E2D, 'fg': 0xA2AADD},
+    alt_row_style={'bg': 0x181A28, 'fg': 0xA2AADD},
+    highlight_style={'bg': 0x232D51, 'fg': 0xA2AADD},
+)
 
 # right-justify the right columns
 table.set_column_format(1, {'justify': 'right'})
